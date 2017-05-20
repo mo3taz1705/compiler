@@ -1,3 +1,36 @@
+for(int i = 9; i > 0; i = i -1){
+	d = 9;
+}
+
+
+do{
+	u = 9-5;
+}while(x >7);
+
+
+while(a < 7){
+	x = 0;
+	while(a >8){
+	c = 8;
+	}
+}
+
+
+switch(a){
+	case 5:{
+	c = 0;
+	}
+	case 7:{
+
+	}
+}
+
+if(1 not (3 > 5)){
+h  = 10;
+if (1< 4){
+	h = 9;
+}
+}
 int x10 = 5;
 int y = x10;
 #any thing between hashes is comments#
