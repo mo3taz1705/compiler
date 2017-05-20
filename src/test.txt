@@ -1,0 +1,9 @@
+int x10 = 5;
+int y = x10;
+#any thing between hashes is comments#
+# z = 8;   #const int h = (6 + 50)*2 + y - x10 * 2;
+#
+f = 80;
+#
+y = 0;
+;
