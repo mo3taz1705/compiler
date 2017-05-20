@@ -6,4 +6,7 @@ int y = x10;
 f = 80;
 #
 y = 0;
+h = -50;
 ;
+int temp = +9;
+int b = x10 / y * (temp - y);

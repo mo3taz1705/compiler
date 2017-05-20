@@ -4,6 +4,9 @@
 #                                                                             #
 ###############################################################################
 
+register_id = 0
+out_file = None
+
 # Token types
 #
 # EOF (end-of-file) token is used to indicate that
@@ -471,7 +474,7 @@ class Parser(object):
             if token.type == MULTIPLY:
                 self.eat(MULTIPLY)
             elif token.type == DIVIDE:
-                self.eat(INTEGER_DIV)
+                self.eat(DIVIDE)
 
             node = BinOp(left=node, op=token, right=self.factor())
 
@@ -529,7 +532,6 @@ class NodeVisitor(object):
     def generic_visit(self, node):
         raise Exception('No visit_{} method'.format(type(node).__name__))
 
-
 class Interpreter(NodeVisitor):
     def __init__(self, parser):
         self.parser = parser
@@ -544,39 +546,65 @@ class Interpreter(NodeVisitor):
     def visit_VarDecl(self, node):
         var_name = node.left.value
         if node.right:
-            self.GLOBAL_SCOPE[var_name] = self.visit(node.right)
+            value = self.visit(node.right)
+            self.GLOBAL_SCOPE[var_name] = value
+            out_file.write("(=, " + str(value) + ", , " + str(var_name) + ")\n")
 
     def visit_Type(self, node):
         # Do nothing
         pass
 
     def visit_BinOp(self, node):
+        global register_id
         if node.op.type == PLUS:
-            return self.visit(node.left) + self.visit(node.right)
+            # value = self.visit(node.left) + self.visit(node.right)
+            out_file.write('(+, ' + str(self.visit(node.left)) + ', ' + str(self.visit(node.right)) + ', R' + str(register_id) + ')\n')
+            register_id = register_id + 1
+            return 'R' + str(register_id - 1)
         elif node.op.type == MINUS:
-            return self.visit(node.left) - self.visit(node.right)
+            # value = self.visit(node.left) - self.visit(node.right)
+            out_file.write('(-, ' + str(self.visit(node.left)) + ', ' + str(self.visit(node.right)) + ', R' + str(register_id) + ')\n')
+            register_id = register_id + 1
+            return 'R' + str(register_id - 1)
         elif node.op.type == MULTIPLY:
-            return self.visit(node.left) * self.visit(node.right)
+            # value = self.visit(node.left) * self.visit(node.right)
+            out_file.write('(*, ' + str(self.visit(node.left)) + ', ' + str(self.visit(node.right)) + ', R' + str(register_id) + ')\n')
+            register_id = register_id + 1
+            return 'R' + str(register_id - 1)
         elif node.op.type == DIVIDE:
-            return self.visit(node.left) / self.visit(node.right)
+            # value = self.visit(node.left) / self.visit(node.right)
+            out_file.write('(/, ' + str(self.visit(node.left)) + ', ' + str(self.visit(node.right)) + ', R' + str(register_id) + ')\n')
+            register_id = register_id + 1
+            return 'R' + str(register_id - 1)
 
     def visit_Number(self, node):
-        return node.value
+        return str(node.value)
 
     def visit_UnaryOp(self, node):
+        global register_id
         op = node.op.type
         if op == PLUS:
-            return +self.visit(node.expr)
+            return '' + str(self.visit(node.expr))
         elif op == MINUS:
-            return -self.visit(node.expr)
+            # return '-' + str(self.visit(node.expr))
+            out_file.write('(uminus, ' + str(self.visit(node.expr)) + ', , R' + str(register_id) + ')\n')
+            register_id = register_id + 1
+            return 'R' + str(register_id - 1)
 
     def visit_Compound(self, node):
         for child in node.children:
             self.visit(child)
 
     def visit_Assign(self, node):
+        global register_id
         var_name = node.left.value
-        self.GLOBAL_SCOPE[var_name] = self.visit(node.right)
+        # self.GLOBAL_SCOPE[var_name] = self.visit(node.right)
+        value = self.visit(node.right)
+
+        # out_file.write('(=, ' + str(var_name) + ', ' + str(self.visit(node.right)) + ', R' + str(register_id) + ')\n')
+        out_file.write("(=, " + str(value) + ", , " + str(var_name) + ")\n")
+        # register_id = register_id + 1
+        # return 'R' + str(register_id - 1)
 
     def visit_Var(self, node):
         var_name = node.value
@@ -584,10 +612,10 @@ class Interpreter(NodeVisitor):
         if var_value is None:
             raise NameError(repr(var_name))
         else:
-            return var_value
+            return str(var_name)
 
     def visit_NoOp(self, node):
-        pass
+        return ""
 
     def interpret(self):
         tree = self.parser.parse()
@@ -603,10 +631,14 @@ def main():
     lexer = Lexer(text)
     parser = Parser(lexer)
     interpreter = Interpreter(parser)
-    result = interpreter.interpret()
+    with open("out.txt", 'w') as outfile:
+        global out_file
+        out_file = outfile
+        interpreter.interpret()
 
-    for k, v in sorted(interpreter.GLOBAL_SCOPE.items()):
-        print('%s = %s' % (k, v))
+
+    # for k, v in sorted(interpreter.GLOBAL_SCOPE.items()):
+    #     print('%s = %s' % (k, v))
 
 
 if __name__ == '__main__':
