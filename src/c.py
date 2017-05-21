@@ -265,6 +265,7 @@ class Lexer(object):
 #                                                                             #
 ###############################################################################
 
+boolean_e = []
 class AST(object):   # parent node, abstract syntax tree
     pass
 
@@ -503,17 +504,19 @@ class Parser(object):
                             | SWITCH L_PAREN variable R_PAREN L_BRACE (CASE (INTEGER_VALUE | MINUS INTEGER_VALUE) COLON compound_statement)+ (DEFAULT COLON compound_statement) R_BRACE
         """
         node = NoOp()
+        global boolean_e
         if self.current_token.type == IF:
             self.eat(IF)
             self.eat(L_PAREN)
-            self.bool_expr = self.boolean_expression()
+            boolean_e.append(self.boolean_expression())
             self.eat(R_PAREN)
             self.cmpd_stat1 = self.compound_statement()
             self.cmpd_stat2 = None
             if self.current_token.type == ELSE:
                 self.eat(ELSE)
                 self.cmpd_stat2 = self.compound_statement()
-            node = IfStat(self.expr, self.cmpd_stat1, self.cmpd_stat2)
+            node = IfStat(boolean_e[-1], self.cmpd_stat1, self.cmpd_stat2)
+            del boolean_e[-1]
             return node
         elif self.current_token.type == SWITCH:
             self.eat(SWITCH)
@@ -577,7 +580,7 @@ class Parser(object):
             self.bool_expr = self.boolean_expression()
             self.eat(R_PAREN)
             self.cmpd_stat = self.compound_statement()
-            node = WhileStat(self.expr, self.cmpd_stat)
+            node = WhileStat(self.bool_expr, self.cmpd_stat)
             return node
         elif self.current_token.type == DO:
             self.eat(DO)
@@ -587,7 +590,7 @@ class Parser(object):
             self.bool_expr = self.boolean_expression()
             self.eat(R_PAREN)
             self.eat(SEMI_COLON)
-            node = DoWhileStat(self.expr, self.cmpd_stat)
+            node = DoWhileStat(self.bool_expr, self.cmpd_stat)
             return node
         elif self.current_token.type == FOR:
             self.eat(FOR)
@@ -797,62 +800,56 @@ class Interpreter(NodeVisitor):
 
 
     def visit_VarDecl(self, node):
-        global label_id
         var_name = node.left.value
         if node.right:
             value = self.visit(node.right)
             self.GLOBAL_SCOPE[var_name] = value
-            out_file.write(str(label_id) + ": (=, " + str(value) + ", , " + str(var_name) + ")\n")
-            label_id = label_id + 1
+            out_file.write("(=, " + str(value) + ", , " + str(var_name) + ")\n")
 
     def visit_Type(self, node):
         # Do nothing
         pass
 
     def visit_BinOp(self, node):
-        global register_id, label_id
+        global register_id
         if node.op.type == PLUS:
             # value = self.visit(node.left) + self.visit(node.right)
             left_val = str(self.visit(node.left))
             right_val = str(self.visit(node.right))
             destination_register = 'R' + str(register_id)
-            out_file.write(str(label_id) + ': (+, ' + left_val + ', ' + right_val + ', ' + destination_register + ')\n')
+            out_file.write('(+, ' + left_val + ', ' + right_val + ', ' + destination_register + ')\n')
             register_id = register_id + 1
-            label_id = label_id + 1
             return destination_register
         elif node.op.type == MINUS:
             # value = self.visit(node.left) - self.visit(node.right)
             left_val = str(self.visit(node.left))
             right_val = str(self.visit(node.right))
             destination_register = 'R' + str(register_id)
-            out_file.write(str(label_id) + ': (-, ' + left_val + ', ' + right_val + ', ' + destination_register + ')\n')
+            out_file.write('(-, ' + left_val + ', ' + right_val + ', ' + destination_register + ')\n')
             register_id = register_id + 1
-            label_id = label_id + 1
             return destination_register
         elif node.op.type == MULTIPLY:
             # value = self.visit(node.left) * self.visit(node.right)
             left_val = str(self.visit(node.left))
             right_val = str(self.visit(node.right))
             destination_register = 'R' + str(register_id)
-            out_file.write(str(label_id) + ': (*, ' + left_val + ', ' + right_val + ', ' + destination_register + ')\n')
+            out_file.write('(*, ' + left_val + ', ' + right_val + ', ' + destination_register + ')\n')
             register_id = register_id + 1
-            label_id = label_id + 1
             return destination_register
         elif node.op.type == DIVIDE:
             # value = self.visit(node.left) / self.visit(node.right)
             left_val = str(self.visit(node.left))
             right_val = str(self.visit(node.right))
             destination_register = 'R' + str(register_id)
-            out_file.write(str(label_id) + ': (/, ' + left_val + ', ' + right_val + ', ' + destination_register + ')\n')
+            out_file.write('(/, ' + left_val + ', ' + right_val + ', ' + destination_register + ')\n')
             register_id = register_id + 1
-            label_id = label_id + 1
             return destination_register
 
     def visit_Number(self, node):
         return str(node.value)
 
     def visit_UnaryOp(self, node):
-        global register_id, label_id
+        global register_id
         op = node.op.type
         if op == PLUS:
             return '' + str(self.visit(node.expr))
@@ -860,9 +857,8 @@ class Interpreter(NodeVisitor):
             # return '-' + str(self.visit(node.expr))
             value = str(self.visit(node.expr))
             destination_register = 'R' + str(register_id)
-            out_file.write(str(label_id) + ': (uminus, ' + value + ', , ' + destination_register + ')\n')
+            out_file.write('(uminus, ' + value + ', , ' + destination_register + ')\n')
             register_id = register_id + 1
-            label_id = label_id + 1
             return destination_register
 
     def visit_Compound(self, node):
@@ -870,14 +866,13 @@ class Interpreter(NodeVisitor):
             self.visit(child)
 
     def visit_Assign(self, node):
-        global register_id, label_id
+        global register_id
         var_name = node.left.value
         # self.GLOBAL_SCOPE[var_name] = self.visit(node.right)
         value = self.visit(node.right)
 
         # out_file.write('(=, ' + str(var_name) + ', ' + str(self.visit(node.right)) + ', R' + str(register_id) + ')\n')
-        out_file.write(str(label_id) + ": (=, " + str(value) + ", , " + str(var_name) + ")\n")
-        label_id = label_id + 1
+        out_file.write("(=, " + str(value) + ", , " + str(var_name) + ")\n")
         # register_id = register_id + 1
         # return 'R' + str(register_id - 1)
 
@@ -896,22 +891,85 @@ class Interpreter(NodeVisitor):
         return str(node.value)
 
     def visit_SwitchStat(self, node):
-        pass
+        global register_id, label_id
+        v = str(node.var.value)
+        for i,case in enumerate(node.case_stats):
+            cmpd = node.cmpd_stats[i]
+            my_label = label_id
+            label_id = label_id + 1
+            out_file.write('L' + str(my_label) + ':\n')
+            if not (str(case.value) == 'DEFAULT'):
+                destination_register = 'R' + str(register_id)
+                out_file.write('(equal, ' + v + ', ' + str(case.value) + ', ' + destination_register + ')\n')
+                register_id = register_id + 1
+                out_file.write('(jfalse, L' + str(label_id) + ', ' + destination_register + ', )\n')
+            self.visit(cmpd)
+            
+
+
 
     def visit_IfStat(self, node):
-        pass
+        global register_id, label_id
+        value = str(self.visit(node.expr))
+        my_label = label_id
+        label_id = label_id + 1
+        out_file.write('(jfalse, L' + str(my_label) + ', ' + value + ', )\n')
+        value = str(self.visit(node.cmpd1))
+        if node.cmpd2 is not None:
+            my_label = label_id
+            label_id = label_id + 1
+            out_file.write('(jmp, L' + str(my_label) + ', , )\n')
+            value = str(self.visit(node.cmpd1))
+        out_file.write('L' + str(my_label) + ':\n')
 
     def visit_WhileStat(self, node):
-        pass
+        global register_id, label_id
+        my_label1 = label_id
+        label_id = label_id + 1
+        out_file.write('L' + str(my_label1) + ':\n')
+        cond = str(self.visit(node.expr))
+        my_label2 = label_id
+        label_id = label_id + 1
+        out_file.write('(jfalse, L' + str(my_label2) + ', ' + cond + ', )\n')
+        val = str(self.visit(node.cmpd1))
+        out_file.write('(jmp, L' + str(my_label1) + ', , )\n')
+        out_file.write('L' + str(my_label2) + ':\n')
 
     def visit_DoWhileStat(self, node):
-        pass
+        global register_id, label_id
+        my_label1 = label_id
+        label_id = label_id + 1
+        out_file.write('L' + str(my_label1) + ':\n')
+        cond = str(self.visit(node.cmpd1))
+        # my_label2 = label_id
+        # label_id = label_id + 1
+        # out_file.write('(jfalse, L' + str(my_label2) + ', ' + cond + ', )\n')
+        val = str(self.visit(node.expr))
+        out_file.write('(jtrue, L' + str(my_label1) + ', ' + val + ', )\n')
 
     def visit_BoolOp(self, node):
-        pass
+        global register_id
+        left_val = str(self.visit(node.left))
+        right_val = str(self.visit(node.right))
+        destination_register = 'R' + str(register_id)
+        out_file.write('(' + str(node.op.type) + ', ' + left_val + ', ' + right_val + ', ' + destination_register + ')\n')
+        register_id = register_id + 1
+        return destination_register
 
     def visit_ForStat(self, node):
-        pass
+        global register_id, label_id
+        value = str(self.visit(node.init))
+        my_label1 = label_id
+        label_id = label_id + 1
+        out_file.write('L' + str(my_label1) + ':\n')
+        cond = str(self.visit(node.middle))
+        my_label2 = label_id
+        label_id = label_id + 1
+        out_file.write('(jfalse, L' + str(my_label2) + ', ' + cond + ', )\n')
+        cmpd = str(self.visit(node.cmpd_stat))
+        it = str(self.visit(node.end))
+        out_file.write('(jmp, L' + str(my_label1) + ', , )\n')
+        out_file.write('L' + str(my_label2) + ':\n')        
 
     def visit_BreakStat(self, node):
         pass
@@ -920,7 +978,7 @@ class Interpreter(NodeVisitor):
         tree = self.parser.parse()
         if tree is None:
             return ''
-        # return self.visit(tree)
+        return self.visit(tree)
 
 
 def main():

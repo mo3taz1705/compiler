@@ -1,3 +1,74 @@
+int i = 0;
+int z;
+switch(i){
+	case 5:{
+	z = 0;
+	}
+	case 7:{
+	z = 1;
+	}
+	default:{
+	z = -1;
+	}
+}
+
+
+
+int a = 0;
+int c = 8;
+
+do{
+	a = 9-5;
+}while(c >7);
+
+
+
+int a = 0;
+int c = 8;
+while(a < 7){
+	int x = 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+for(int i = 9; i > 0; i = i -1){
+	d = 9;
+}
+
+
+
+
+
+if(3 > 5){
+h  = 10;
+if (1< 5){
+	h = 9;
+}else{
+	h = 8;
+}
+}
+
+int z=0;
+int i=3;
+while (i<0)
+{
+z =2;
+i=i+1;
+}
+
+
+
+
 for(int i = 9; i > 0; i = i -1){
 	d = 9;
 }
@@ -16,12 +87,15 @@ while(a < 7){
 }
 
 
-switch(a){
+switch(i){
 	case 5:{
-	c = 0;
+	z = 0;
 	}
 	case 7:{
-
+	z = 1;
+	}
+	default:{
+	z = -1;
 	}
 }
 

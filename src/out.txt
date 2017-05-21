@@ -1,0 +1,118 @@
+(=, 0, , i)
+L1:
+(equal, i, 5, R0)
+(jfalse, L2, R0, )
+(=, 0, , z)
+L2:
+(equal, i, 7, R1)
+(jfalse, L3, R1, )
+(=, 1, , z)
+L3:
+(uminus, 1, , R2)
+(=, R2, , z)
+(=, 0, , a)
+(=, 8, , c)
+L4:
+(-, 9, 5, R3)
+(=, R3, , a)
+(GREATER, c, 7, R4)
+(jtrue, L4, R4, )
+(=, 0, , a)
+(=, 8, , c)
+L5:
+(LESS, a, 7, R5)
+(jfalse, L6, R5, )
+(=, 0, , x)
+(jmp, L5, , )
+L6:
+(=, 9, , i)
+L7:
+(GREATER, i, 0, R6)
+(jfalse, L8, R6, )
+(=, 9, , d)
+(-, i, 1, R7)
+(=, R7, , i)
+(jmp, L7, , )
+L8:
+(GREATER, 3, 5, R8)
+(jfalse, L9, R8, )
+(=, 10, , h)
+(LESS, 1, 5, R9)
+(jfalse, L10, R9, )
+(=, 9, , h)
+(jmp, L11, , )
+(=, 9, , h)
+L11:
+L9:
+(=, 0, , z)
+(=, 3, , i)
+L12:
+(LESS, i, 0, R10)
+(jfalse, L13, R10, )
+(=, 2, , z)
+(+, i, 1, R11)
+(=, R11, , i)
+(jmp, L12, , )
+L13:
+(=, 9, , i)
+L14:
+(GREATER, i, 0, R12)
+(jfalse, L15, R12, )
+(=, 9, , d)
+(-, i, 1, R13)
+(=, R13, , i)
+(jmp, L14, , )
+L15:
+L16:
+(-, 9, 5, R14)
+(=, R14, , u)
+(GREATER, x, 7, R15)
+(jtrue, L16, R15, )
+L17:
+(GREATER, a, 8, R16)
+(jfalse, L18, R16, )
+(=, 0, , x)
+L19:
+(GREATER, a, 8, R17)
+(jfalse, L20, R17, )
+(=, 8, , c)
+(jmp, L19, , )
+L20:
+(jmp, L17, , )
+L18:
+L21:
+(equal, i, 5, R18)
+(jfalse, L22, R18, )
+(=, 0, , z)
+L22:
+(equal, i, 7, R19)
+(jfalse, L23, R19, )
+(=, 1, , z)
+L23:
+(uminus, 1, , R20)
+(=, R20, , z)
+(GREATER, 3, 5, R21)
+(NOT, 1, R21, R22)
+(jfalse, L24, R22, )
+(=, 10, , h)
+(LESS, 1, 4, R23)
+(jfalse, L25, R23, )
+(=, 9, , h)
+L25:
+L24:
+(=, 5, , x10)
+(=, x10, , y)
+(+, 6, 50, R24)
+(*, R24, 2, R25)
+(+, R25, y, R26)
+(*, x10, 2, R27)
+(-, R26, R27, R28)
+(=, R28, , h)
+(=, 0, , y)
+(uminus, 50, , R29)
+(=, R29, , h)
+(=, 9, , temp)
+(/, x10, y, R30)
+(-, temp, y, R31)
+(*, R30, R31, R32)
+(=, R32, , b)
