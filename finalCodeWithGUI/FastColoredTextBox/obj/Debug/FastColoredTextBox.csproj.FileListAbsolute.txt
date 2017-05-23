@@ -1,0 +1,25 @@
+C:\Users\Ramadan\Desktop\FastColoredTextBox-master\FastColoredTextBox\bin\Debug\FastColoredTextBox.XML
+C:\Users\Ramadan\Desktop\FastColoredTextBox-master\FastColoredTextBox\bin\Debug\FastColoredTextBox.dll
+C:\Users\Ramadan\Desktop\FastColoredTextBox-master\FastColoredTextBox\bin\Debug\FastColoredTextBox.pdb
+C:\Users\Ramadan\Desktop\FastColoredTextBox-master\FastColoredTextBox\obj\Debug\FastColoredTextBox.csprojResolveAssemblyReference.cache
+C:\Users\Ramadan\Desktop\FastColoredTextBox-master\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.FastColoredTextBox.resources
+C:\Users\Ramadan\Desktop\FastColoredTextBox-master\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.FindForm.resources
+C:\Users\Ramadan\Desktop\FastColoredTextBox-master\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.GoToForm.resources
+C:\Users\Ramadan\Desktop\FastColoredTextBox-master\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.HotkeysEditorForm.resources
+C:\Users\Ramadan\Desktop\FastColoredTextBox-master\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.ReplaceForm.resources
+C:\Users\Ramadan\Desktop\FastColoredTextBox-master\FastColoredTextBox\obj\Debug\FastColoredTextBox.csproj.GenerateResource.Cache
+C:\Users\Ramadan\Desktop\FastColoredTextBox-master\FastColoredTextBox\obj\Debug\FastColoredTextBox.dll
+C:\Users\Ramadan\Desktop\FastColoredTextBox-master\FastColoredTextBox\obj\Debug\FastColoredTextBox.pdb
+c:\Users\Ramadan\Documents\Visual Studio 2015\Projects\Compiler\FastColoredTextBox\bin\Debug\FastColoredTextBox.XML
+c:\Users\Ramadan\Documents\Visual Studio 2015\Projects\Compiler\FastColoredTextBox\bin\Debug\FastColoredTextBox.dll
+c:\Users\Ramadan\Documents\Visual Studio 2015\Projects\Compiler\FastColoredTextBox\bin\Debug\FastColoredTextBox.pdb
+c:\Users\Ramadan\Documents\Visual Studio 2015\Projects\Compiler\FastColoredTextBox\obj\Debug\FastColoredTextBox.csprojResolveAssemblyReference.cache
+c:\Users\Ramadan\Documents\Visual Studio 2015\Projects\Compiler\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.AutocompleteMenu.resources
+c:\Users\Ramadan\Documents\Visual Studio 2015\Projects\Compiler\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.FastColoredTextBox.resources
+c:\Users\Ramadan\Documents\Visual Studio 2015\Projects\Compiler\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.FindForm.resources
+c:\Users\Ramadan\Documents\Visual Studio 2015\Projects\Compiler\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.GoToForm.resources
+c:\Users\Ramadan\Documents\Visual Studio 2015\Projects\Compiler\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.HotkeysEditorForm.resources
+c:\Users\Ramadan\Documents\Visual Studio 2015\Projects\Compiler\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.ReplaceForm.resources
+c:\Users\Ramadan\Documents\Visual Studio 2015\Projects\Compiler\FastColoredTextBox\obj\Debug\FastColoredTextBox.csproj.GenerateResource.Cache
+c:\Users\Ramadan\Documents\Visual Studio 2015\Projects\Compiler\FastColoredTextBox\obj\Debug\FastColoredTextBox.dll
+c:\Users\Ramadan\Documents\Visual Studio 2015\Projects\Compiler\FastColoredTextBox\obj\Debug\FastColoredTextBox.pdb
